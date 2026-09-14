@@ -8,15 +8,96 @@
 </head>
 <body>
 
-  <!-- Шапка з назвою і навігацією -->
+  <!-- Шапка сторінки -->
+  <header>
+    <h1>Афіша подій міста</h1>
+    <nav aria-label="Головна навігація">
+      <ul>
+        <li><a href="#filters">Фільтри</a></li>
+        <li><a href="#events">Події</a></li>
+        <li><a href="#selected-event">Обрана подія</a></li>
+      </ul>
+    </nav>
+  </header>
 
-  <!-- Блок фільтра за датою/категорією -->
+  <!-- Основний унікальний контент сторінки -->
+  <main>
+    <!-- Блок фільтрації -->
+    <section id="filters">
+      <h2>Фільтр за датою та категорією</h2>
+      <form action="#" method="get">
+        <div>
+          <label for="filter-date">Оберіть дату:</label>
+          <input type="date" id="filter-date" name="event-date">
+        </div>
+        <div>
+          <label for="filter-category">Категорія заходу:</label>
+          <select id="filter-category" name="category">
+            <option value="all">Усі категорії</option>
+            <option value="concert">Концерти</option>
+            <option value="theatre">Театр</option>
+            <option value="exhibition">Виставки</option>
+            <option value="festival">Фестивалі</option>
+          </select>
+        </div>
+        <button type="submit">Застосувати фільтр</button>
+      </form>
+    </section>
 
-  <!-- Список подій (картки) -->
+    <!-- Список подій (картки) -->
+    <section id="events">
+      <h2>Найближчі події</h2>
 
-  <!-- Блок деталей обраної події -->
+      <!-- Картка події 1 -->
+      <article class="event-card">
+        <header>
+          <h3>Симфонічний вечір при свічках</h3>
+          <p><time datetime="2026-10-15T19:00">15 жовтня 2026, 19:00</time></p>
+        </header>
+        <figure>
+          <img src="assets/img/concert.jpg" alt="Оркестр виконує класичну музику в залі зі свічками">
+          <figcaption>Національна філармонія</figcaption>
+        </figure>
+        <p>Шедеври світової класики у виконанні камерного оркестру при атмосферному освітленні.</p>
+        <a href="#selected-event">Детальніше</a>
+      </article>
 
-  <!-- Підвал сайту -->
+      <!-- Картка події 2 -->
+      <article class="event-card">
+        <header>
+          <h3>Виставка сучасного арту «Межі»</h3>
+          <p><time datetime="2026-10-18T11:00">18 жовтня 2026, 11:00</time></p>
+        </header>
+        <figure>
+          <img src="assets/img/art.jpg" alt="Картини та скульптури молодих художників у галереї">
+          <figcaption>Міський арт-центр</figcaption>
+        </figure>
+        <p>Експозиція картин та інсталяцій незалежних українських митців нового покоління.</p>
+        <a href="#selected-event">Детальніше</a>
+      </article>
+    </section>
+  </main>
+
+  <!-- Бічна панель: деталі обраної події -->
+  <aside id="selected-event">
+    <h2>Деталі обраної події</h2>
+    <p><strong>Подія:</strong> Симфонічний вечір при свічках</p>
+    <p><strong>Місце проведення:</strong> Велика концертна зала, вул. Хрещатик, 1</p>
+    <p><strong>Вартість квитка:</strong> від 450 грн</p>
+    <p><strong>Організатор:</strong> City Concert Agency</p>
+  </aside>
+
+  <!-- Підвал сторінки -->
+  <footer>
+    <section>
+      <h2>Контакти організаторів</h2>
+      <address>
+        <p>Електронна пошта: <a href="mailto:info@cityevents.kpi.ua">info@cityevents.kpi.ua</a></p>
+        <p>Телефон гарячої лінії: <a href="tel:+380441234567">+38 (044) 123-45-67</a></p>
+      </address>
+    </section>
+    <p>&copy; 2026 Афіша культурних подій міста. Навчальний проєкт ФІОТ КПІ.</p>
+  </footer>
 
   <script src="js/app.js"></script>
 </body>
