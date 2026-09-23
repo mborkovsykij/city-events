@@ -1,5 +1,5 @@
 *, *::before, *::after {
-  box-sizing: border-box; 
+  box-sizing: border-box;
 }
 
 body {
@@ -8,7 +8,7 @@ body {
   font-size: 1rem;
   line-height: 1.5;
   color: #222222;
-  background-color: #f7f9fa; 
+  background-color: #f7f9fa;
 }
 
 .container {
@@ -17,12 +17,11 @@ body {
   padding: 0 16px;
 }
 
-
 .site-header {
-  background-color: #1a1e24; 
+  background-color: #1a1e24;
   color: #ffffff;
   padding: 24px 0;
-  border-bottom: 3px solid #e63946; 
+  border-bottom: 3px solid #e63946;
 }
 
 .site-header h1 {
@@ -39,7 +38,7 @@ body {
 
 .nav-list li {
   display: inline-block;
-  margin-right: 16px; 
+  margin-right: 16px;
 }
 
 .nav-list a {
@@ -53,7 +52,6 @@ body {
   text-decoration: underline;
 }
 
-
 .page-layout {
   padding-top: 24px;
   padding-bottom: 32px;
@@ -61,7 +59,7 @@ body {
 
 .section-filters,
 .section-events {
-  margin-bottom: 32px; 
+  margin-bottom: 32px;
 }
 
 .section-filters h2,
@@ -112,21 +110,21 @@ body {
   background-color: #333a44;
 }
 
-
 .event-card {
   background-color: #ffffff;
   padding: 16px;
-  margin-bottom: 10px; /* Суворо за методичкою */
+  margin-bottom: 10px;
   border: 1px solid #e1e4e8;
   border-radius: 4px;
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
 }
 
 .event-card--concert {
-  border-left: 4px solid #e63946; 
+  border-left: 4px solid #e63946;
+}
 
 .event-card--exhibition {
-  border-left: 4px solid #457b9d; 
+  border-left: 4px solid #457b9d;
 }
 
 .event-card__header h3 {
@@ -170,9 +168,8 @@ body {
   text-decoration: underline;
 }
 
-
 .selected-event {
-  background-color: #e9ecef; 
+  background-color: #e9ecef;
   border: 1px solid #ced4da;
   padding: 16px;
   border-radius: 6px;
@@ -182,7 +179,6 @@ body {
 .selected-event p {
   margin: 6px 0;
 }
-
 
 .site-footer {
   background-color: #1a1e24;
