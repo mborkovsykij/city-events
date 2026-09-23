@@ -1,8 +1,5 @@
-/* ==========================================================================
-   1. Глобальний Reset і блокова модель (Box Model)
-   ========================================================================== */
 *, *::before, *::after {
-  box-sizing: border-box; /* Гарантує стабільну ширину елементів */
+  box-sizing: border-box; 
 }
 
 body {
@@ -11,24 +8,21 @@ body {
   font-size: 1rem;
   line-height: 1.5;
   color: #222222;
-  background-color: #f7f9fa; /* Світлий акцентний фон афіші */
+  background-color: #f7f9fa; 
 }
 
-/* Допоміжний контейнер для центрування вмісту */
 .container {
   max-width: 960px;
   margin: 0 auto;
   padding: 0 16px;
 }
 
-/* ==========================================================================
-   2. Стилізація Header (Темний контрастний фон, білий h1)
-   ========================================================================== */
+
 .site-header {
-  background-color: #1a1e24; /* Контрастний темний фон */
+  background-color: #1a1e24; 
   color: #ffffff;
   padding: 24px 0;
-  border-bottom: 3px solid #e63946; /* Яскравий акцентний бордюр */
+  border-bottom: 3px solid #e63946; 
 }
 
 .site-header h1 {
@@ -45,7 +39,7 @@ body {
 
 .nav-list li {
   display: inline-block;
-  margin-right: 16px; /* Відступ між посиланнями */
+  margin-right: 16px; 
 }
 
 .nav-list a {
@@ -59,9 +53,7 @@ body {
   text-decoration: underline;
 }
 
-/* ==========================================================================
-   3. Основний макет і секції (main, section)
-   ========================================================================== */
+
 .page-layout {
   padding-top: 24px;
   padding-bottom: 32px;
@@ -69,7 +61,7 @@ body {
 
 .section-filters,
 .section-events {
-  margin-bottom: 32px; /* Зовнішній відступ між секціями */
+  margin-bottom: 32px; 
 }
 
 .section-filters h2,
@@ -81,7 +73,6 @@ body {
   font-size: 1.4rem;
 }
 
-/* Форма фільтрації */
 .filter-form {
   background-color: #ffffff;
   padding: 16px;
@@ -121,10 +112,7 @@ body {
   background-color: #333a44;
 }
 
-/* ==========================================================================
-   4. Картки подій (article)
-   Вимоги варіанта: padding: 16px, margin-bottom: 10px, border-left: 4px
-   ========================================================================== */
+
 .event-card {
   background-color: #ffffff;
   padding: 16px;
@@ -134,13 +122,11 @@ body {
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
 }
 
-/* Кольорові смужки border-left за категоріями */
 .event-card--concert {
-  border-left: 4px solid #e63946; /* Червоний акцент для концертів */
-}
+  border-left: 4px solid #e63946; 
 
 .event-card--exhibition {
-  border-left: 4px solid #457b9d; /* Синій акцент для виставок */
+  border-left: 4px solid #457b9d; 
 }
 
 .event-card__header h3 {
@@ -184,12 +170,9 @@ body {
   text-decoration: underline;
 }
 
-/* ==========================================================================
-   5. Бічна панель: aside (Деталі події)
-   Вимоги варіанта: border 1px, padding, фон темніший за main
-   ========================================================================== */
+
 .selected-event {
-  background-color: #e9ecef; /* Фон трохи темніший за основний #f7f9fa */
+  background-color: #e9ecef; 
   border: 1px solid #ced4da;
   padding: 16px;
   border-radius: 6px;
@@ -200,9 +183,7 @@ body {
   margin: 6px 0;
 }
 
-/* ==========================================================================
-   6. Підвал: footer (менший шрифт, padding, приглушений колір)
-   ========================================================================== */
+
 .site-footer {
   background-color: #1a1e24;
   color: #a0aab2;
