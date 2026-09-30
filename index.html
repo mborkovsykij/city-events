@@ -8,11 +8,10 @@
 </head>
 <body>
 
-  <!-- Шапка сторінки -->
   <header class="site-header">
     <div class="container header-container">
-      <h1>Афіша культурних подій</h1>
-      <nav aria-label="Головна навігація">
+      <h1 class="site-logo">Афіша культурних подій</h1>
+      <nav aria-label="Головна навігація" class="main-nav">
         <ul class="nav-list">
           <li><a href="#filters">Фільтри</a></li>
           <li><a href="#events">Події</a></li>
@@ -23,9 +22,7 @@
   </header>
 
   <div class="container page-layout">
-    <!-- Основний унікальний контент сторінки -->
     <main class="main-content">
-      <!-- Блок фільтрації -->
       <section id="filters" class="section-filters">
         <h2>Фільтр за датою та категорією</h2>
         <form action="#" method="get" class="filter-form">
@@ -46,51 +43,61 @@
         </form>
       </section>
 
-      <!-- Список подій (картки) -->
       <section id="events" class="section-events">
         <h2>Найближчі події</h2>
+        
+        <div class="events-grid">
+          <article class="event-card event-card--concert">
+            <header class="event-card__header">
+              <h3>Симфонічний вечір</h3>
+              <p><time datetime="2026-10-15T19:00">15 жовтня 2026, 19:00</time></p>
+            </header>
+            <figure class="event-card__figure">
+              <img src="assets/img/concert.jpg" alt="Оркестр виконує класичну музику в освітленій залі" class="event-card__img">
+              <figcaption>Головна концертна зала</figcaption>
+            </figure>
+            <p>Шедеври класичної музики у виконанні камерного оркестру при атмосферному освітленні.</p>
+            <a href="#selected-event" class="event-card__link">Детальніше</a>
+          </article>
 
-        <!-- Картка 1 (Концерт) -->
-        <article class="event-card event-card--concert">
-          <header class="event-card__header">
-            <h3>Симфонічний вечір при свічках</h3>
-            <p><time datetime="2026-10-15T19:00">15 жовтня 2026, 19:00</time></p>
-          </header>
-          <figure class="event-card__figure">
-            <img src="assets/img/concert.jpg" alt="Оркестр виконує класичну музику в освітленій залі" class="event-card__img">
-            <figcaption>Головна концертна зала</figcaption>
-          </figure>
-          <p>Шедеври класичної музики у виконанні камерного оркестру при атмосферному освітленні.</p>
-          <a href="#selected-event" class="event-card__link">Детальніше</a>
-        </article>
+          <article class="event-card event-card--exhibition">
+            <header class="event-card__header">
+              <h3>Виставка мистецтва</h3>
+              <p><time datetime="2026-10-18T11:00">18 жовтня 2026, 11:00</time></p>
+            </header>
+            <figure class="event-card__figure">
+              <img src="assets/img/art.jpg" alt="Картини та скульптури в експозиційному просторі" class="event-card__img">
+              <figcaption>Виставковий центр</figcaption>
+            </figure>
+            <p>Експозиція візуального мистецтва та просторових інсталяцій від сучасних авторів.</p>
+            <a href="#selected-event" class="event-card__link">Детальніше</a>
+          </article>
 
-        <!-- Картка 2 (Виставка) -->
-        <article class="event-card event-card--exhibition">
-          <header class="event-card__header">
-            <h3>Виставка сучасного мистецтва</h3>
-            <p><time datetime="2026-10-18T11:00">18 жовтня 2026, 11:00</time></p>
-          </header>
-          <figure class="event-card__figure">
-            <img src="assets/img/art.jpg" alt="Картини та скульптури в експозиційному просторі" class="event-card__img">
-            <figcaption>Виставковий центр</figcaption>
-          </figure>
-          <p>Експозиція візуального мистецтва та інсталяцій від сучасних авторів.</p>
-          <a href="#selected-event" class="event-card__link">Детальніше</a>
-        </article>
+          <article class="event-card event-card--theatre">
+            <header class="event-card__header">
+              <h3>Драматична вистава</h3>
+              <p><time datetime="2026-10-22T18:30">22 жовтня 2026, 18:30</time></p>
+            </header>
+            <figure class="event-card__figure">
+              <img src="assets/img/theatre.jpg" alt="Театральна сцена з акторами у світлі прожекторів" class="event-card__img">
+              <figcaption>Національний драматичний театр</figcaption>
+            </figure>
+            <p>Класична п'єса в сучасній режисерській інтерпретації провідної трупи міста.</p>
+            <a href="#selected-event" class="event-card__link">Детальніше</a>
+          </article>
+        </div>
       </section>
     </main>
 
-    <!-- Бічна панель: деталі обраної події (поза main) -->
     <aside id="selected-event" class="selected-event">
       <h2>Деталі обраної події</h2>
-      <p><strong>Подія:</strong> Симфонічний вечір при свічках</p>
+      <p><strong>Подія:</strong> Симфонічний вечір</p>
       <p><strong>Місце проведення:</strong> Головний сценічний комплекс</p>
       <p><strong>Вартість квитка:</strong> від 450 грн</p>
       <p><strong>Організатор:</strong> Культурна ініціатива</p>
     </aside>
   </div>
 
-  <!-- Підвал сторінки -->
   <footer class="site-footer">
     <div class="container">
       <section class="footer-contacts">

@@ -1,8 +1,5 @@
-/* ==========================================================================
-   1. Глобальний Reset і блокова модель (Box Model)
-   ========================================================================== */
 *, *::before, *::after {
-  box-sizing: border-box; /* Гарантує стабільну ширину елементів */
+  box-sizing: border-box;
 }
 
 body {
@@ -11,29 +8,37 @@ body {
   font-size: 1rem;
   line-height: 1.5;
   color: #222222;
-  background-color: #f7f9fa; /* Світлий акцентний фон афіші */
+  background-color: #f7f9fa;
 }
 
-/* Допоміжний контейнер для центрування вмісту */
+img {
+  max-width: 100%;
+  height: auto;
+  display: block;
+}
+
 .container {
-  max-width: 960px;
+  max-width: 1200px;
   margin: 0 auto;
   padding: 0 16px;
 }
 
-/* ==========================================================================
-   2. Стилізація Header (Темний контрастний фон, білий h1)
-   ========================================================================== */
 .site-header {
-  background-color: #1a1e24; /* Контрастний темний фон */
+  background-color: #1a1e24;
   color: #ffffff;
-  padding: 24px 0;
-  border-bottom: 3px solid #e63946; /* Яскравий акцентний бордюр */
+  padding: 16px 0;
+  border-bottom: 3px solid #e63946;
 }
 
-.site-header h1 {
-  margin: 0 0 12px 0;
-  font-size: 2.2rem;
+.header-container {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.site-logo {
+  margin: 0;
+  font-size: 1.6rem;
   color: #ffffff;
 }
 
@@ -41,17 +46,16 @@ body {
   list-style: none;
   margin: 0;
   padding: 0;
-}
-
-.nav-list li {
-  display: inline-block;
-  margin-right: 16px; /* Відступ між посиланнями */
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
 }
 
 .nav-list a {
   color: #e0e0e0;
   text-decoration: none;
   font-weight: 500;
+  font-size: 0.95rem;
 }
 
 .nav-list a:hover {
@@ -59,43 +63,43 @@ body {
   text-decoration: underline;
 }
 
-/* ==========================================================================
-   3. Основний макет і секції (main, section)
-   ========================================================================== */
 .page-layout {
-  padding-top: 24px;
+  padding-top: 20px;
   padding-bottom: 32px;
+  display: block;
 }
 
 .section-filters,
 .section-events {
-  margin-bottom: 32px; /* Зовнішній відступ між секціями */
+  margin-bottom: 28px;
 }
 
 .section-filters h2,
 .section-events h2,
 .selected-event h2 {
   margin-top: 0;
-  margin-bottom: 16px;
+  margin-bottom: 14px;
   color: #111111;
-  font-size: 1.4rem;
+  font-size: 1.3rem;
 }
 
-/* Форма фільтрації */
 .filter-form {
   background-color: #ffffff;
   padding: 16px;
   border: 1px solid #e1e4e8;
   border-radius: 6px;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
 }
 
 .form-group {
-  margin-bottom: 12px;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
 }
 
 .form-group label {
-  display: block;
-  margin-bottom: 6px;
   font-weight: 600;
   font-size: 0.9rem;
 }
@@ -106,46 +110,50 @@ body {
   border: 1px solid #ccc;
   border-radius: 4px;
   font-size: 0.95rem;
+  width: 100%;
 }
 
 .btn-submit {
-  padding: 8px 16px;
+  padding: 10px 16px;
   background-color: #1a1e24;
   color: #ffffff;
   border: none;
   border-radius: 4px;
   cursor: pointer;
+  font-weight: 600;
 }
 
-.btn-submit:hover {
-  background-color: #333a44;
+.events-grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 16px;
 }
 
-/* ==========================================================================
-   4. Картки подій (article)
-   Вимоги варіанта: padding: 16px, margin-bottom: 10px, border-left: 4px
-   ========================================================================== */
 .event-card {
   background-color: #ffffff;
   padding: 16px;
-  margin-bottom: 10px; /* Суворо за методичкою */
   border: 1px solid #e1e4e8;
   border-radius: 4px;
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+  display: flex;
+  flex-direction: column;
 }
 
-/* Кольорові смужки border-left за категоріями */
 .event-card--concert {
-  border-left: 4px solid #e63946; /* Червоний акцент для концертів */
+  border-left: 4px solid #e63946;
 }
 
 .event-card--exhibition {
-  border-left: 4px solid #457b9d; /* Синій акцент для виставок */
+  border-left: 4px solid #457b9d;
+}
+
+.event-card--theatre {
+  border-left: 4px solid #2a9d8f;
 }
 
 .event-card__header h3 {
   margin: 0 0 4px 0;
-  font-size: 1.2rem;
+  font-size: 1.15rem;
   color: #1a1e24;
 }
 
@@ -158,13 +166,6 @@ body {
   margin: 12px 0;
 }
 
-.event-card__img {
-  max-width: 100%;
-  height: auto;
-  display: block;
-  border-radius: 4px;
-}
-
 .event-card__figure figcaption {
   font-size: 0.8rem;
   color: #777777;
@@ -174,7 +175,8 @@ body {
 
 .event-card__link {
   display: inline-block;
-  margin-top: 8px;
+  margin-top: auto;
+  padding-top: 8px;
   color: #1d3557;
   font-weight: 600;
   text-decoration: none;
@@ -184,12 +186,8 @@ body {
   text-decoration: underline;
 }
 
-/* ==========================================================================
-   5. Бічна панель: aside (Деталі події)
-   Вимоги варіанта: border 1px, padding, фон темніший за main
-   ========================================================================== */
 .selected-event {
-  background-color: #e9ecef; /* Фон трохи темніший за основний #f7f9fa */
+  background-color: #e9ecef;
   border: 1px solid #ced4da;
   padding: 16px;
   border-radius: 6px;
@@ -200,9 +198,6 @@ body {
   margin: 6px 0;
 }
 
-/* ==========================================================================
-   6. Підвал: footer (менший шрифт, padding, приглушений колір)
-   ========================================================================== */
 .site-footer {
   background-color: #1a1e24;
   color: #a0aab2;
@@ -232,4 +227,60 @@ body {
   padding-top: 12px;
   font-size: 0.8rem;
   color: #8b949e;
+}
+
+@media (min-width: 600px) {
+  .header-container {
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+  }
+
+  .filter-form {
+    flex-direction: row;
+    align-items: flex-end;
+    flex-wrap: wrap;
+  }
+
+  .form-group {
+    flex: 1 1 200px;
+  }
+
+  .btn-submit {
+    align-self: flex-end;
+    margin-bottom: 2px;
+  }
+
+  .events-grid {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 16px;
+  }
+}
+
+@media (min-width: 1024px) {
+  .site-header {
+    padding: 24px 0;
+  }
+
+  .site-logo {
+    font-size: 2.2rem;
+  }
+
+  .page-layout {
+    display: grid;
+    grid-template-columns: 2fr 1fr;
+    gap: 28px;
+    align-items: start;
+  }
+
+  .events-grid {
+    grid-template-columns: repeat(3, 1fr);
+    gap: 18px;
+  }
+
+  .selected-event {
+    margin-top: 0;
+    position: sticky;
+    top: 20px;
+  }
 }
