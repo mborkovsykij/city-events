@@ -149,69 +149,74 @@ img {
 }
 
 .event-card--concert {
-  border-left: 4px solid #e63946;
+  border-left: 4px solid #a8201a;
 }
 
 .event-card--exhibition {
-  border-left: 4px solid #457b9d;
+  border-left: 4px solid #1d4e6b;
 }
 
 .event-card--theatre {
-  border-left: 4px solid #2a9d8f;
+  border-left: 4px solid #005f73;
 }
 
 .event-card__top {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  margin-bottom: 10px;
+  margin-bottom: 12px;
 }
 
 .badge {
   display: inline-block;
-  padding: 3px 8px;
+  padding: 4px 8px;
   border-radius: 4px;
   font-size: 12px;
   font-weight: 700;
   text-transform: uppercase;
   color: #ffffff;
+  line-height: 1.2;
+  letter-spacing: 0.5px;
 }
 
 .badge--concert {
-  background-color: #e63946;
+  background-color: #a8201a;
 }
 
 .badge--exhibition {
-  background-color: #457b9d;
+  background-color: #1d4e6b;
 }
 
 .badge--theatre {
-  background-color: #2a9d8f;
+  background-color: #005f73;
 }
 
 .event-date {
   display: flex;
   flex-direction: column;
   align-items: center;
-  background-color: #f1f3f5;
-  border: 1px solid #dee2e6;
-  border-radius: 4px;
-  padding: 2px 6px;
-  min-width: 44px;
+  justify-content: center;
+  background-color: #e9ecef;
+  border: 1px solid #ced4da;
+  border-radius: 6px;
+  padding: 4px 8px;
+  min-width: 52px;
+  line-height: 1;
 }
 
 .event-date__day {
-  font-size: 16px;
+  font-size: 24px;
   font-weight: 800;
-  line-height: 1.1;
   color: #111111;
+  margin-bottom: 2px;
 }
 
 .event-date__month {
-  font-size: 11px;
+  font-size: 12px;
   text-transform: uppercase;
-  color: #666666;
-  font-weight: 600;
+  color: #495057;
+  font-weight: 700;
+  letter-spacing: 0.5px;
 }
 
 .event-card__header h3 {
@@ -222,7 +227,7 @@ img {
 
 .event-card__header time {
   font-size: 14px;
-  color: #666666;
+  color: #495057;
 }
 
 .event-card__figure {
@@ -231,7 +236,7 @@ img {
 
 .event-card__figure figcaption {
   font-size: 13px;
-  color: #777777;
+  color: #6c757d;
   margin-top: 4px;
   font-style: italic;
 }
@@ -239,28 +244,29 @@ img {
 .event-card__link {
   display: inline-block;
   margin-top: auto;
-  padding-top: 8px;
-  color: #1d3557;
-  font-weight: 600;
+  padding-top: 12px;
+  color: #005f73;
+  font-weight: 700;
   font-size: 16px;
   text-decoration: none;
 }
 
 .event-card__link:hover {
   text-decoration: underline;
-  color: #e63946;
+  color: #a8201a;
 }
 
 .selected-event {
-  background-color: #e9ecef;
+  background-color: #ffffff;
   border: 1px solid #ced4da;
   padding: 16px;
   border-radius: 6px;
   margin-top: 24px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
 }
 
 .selected-event p {
-  margin: 6px 0;
+  margin: 8px 0;
   font-size: 16px;
 }
 
