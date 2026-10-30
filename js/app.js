@@ -42,7 +42,7 @@ const events = [
     month: 'жовт',
     time: '19:30',
     location: 'Будинок органної музики',
-    img: 'assets/img/organ.jpg', // <--- нова картинка
+    img: 'assets/img/organ.jpg', 
     description: 'Величне звучання історичного органа з творчістю Й. С. Баха.'
   },
   {
@@ -53,7 +53,7 @@ const events = [
     month: 'жовт',
     time: '12:00',
     location: 'Мистецький арсенал',
-    img: 'assets/img/installation.jpg', // <--- нова картинка
+    img: 'assets/img/installation.jpg', 
     description: 'Інтерактивна експозиція цифрового та медіа-мистецтва.'
   },
   {
@@ -64,7 +64,7 @@ const events = [
     month: 'лист',
     time: '19:00',
     location: 'Театр драми і комедії',
-    img: 'assets/img/comedy.jpg', // <--- нова картинка
+    img: 'assets/img/comedy.jpg', 
     description: 'Легка та дотепна вистава про курйози сучасного міського життя.'
   }
 ];
