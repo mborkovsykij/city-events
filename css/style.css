@@ -85,6 +85,19 @@ img {
   font-size: 22px;
 }
 
+.events-summary {
+  font-size: 15px;
+  font-weight: 600;
+  color: #1a1e24;
+  margin-bottom: 16px;
+  padding: 6px 12px;
+  background-color: #ffffff;
+  border-left: 4px solid #ffb703;
+  border-radius: 4px;
+  display: inline-block;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
+}
+
 .filter-form {
   background-color: #ffffff;
   padding: 16px;
@@ -176,7 +189,6 @@ img {
   text-transform: uppercase;
   color: #ffffff;
   line-height: 1.2;
-  letter-spacing: 0.5px;
 }
 
 .badge--concert {
