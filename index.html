@@ -15,6 +15,7 @@
       <nav aria-label="Головна навігація" class="main-nav">
         <ul class="nav-list">
           <li><a href="#filters">Фільтри</a></li>
+          <li><a href="#add-event-section">Додати подію</a></li>
           <li><a href="#events">Події</a></li>
           <li><a href="#selected-event">Обрана подія</a></li>
         </ul>
@@ -25,22 +26,47 @@
   <div class="container page-layout">
     <main class="main-content">
       <section id="filters" class="section-filters">
-        <h2>Фільтр за датою та категорією</h2>
-        <form action="#" method="get" class="filter-form">
+        <h2>Фільтр подій за категорією</h2>
+        <div id="category-filters" class="filter-buttons">
+          <button type="button" class="btn-filter active" data-filter="all">Усі події</button>
+          <button type="button" class="btn-filter" data-filter="concert">Концерти</button>
+          <button type="button" class="btn-filter" data-filter="theatre">Театр</button>
+          <button type="button" class="btn-filter" data-filter="exhibition">Виставки</button>
+        </div>
+      </section>
+
+      <section id="add-event-section" class="section-add-event">
+        <h2>Додати нову подію в афішу</h2>
+        <form id="add-event-form" class="filter-form" novalidate>
           <div class="form-group">
-            <label for="filter-date">Оберіть дату:</label>
-            <input type="date" id="filter-date" name="event-date">
+            <label for="event-title">Назва заходу (мін. 3 символи):</label>
+            <input 
+              type="text" 
+              id="event-title" 
+              name="title" 
+              required 
+              pattern=".{3,}" 
+              placeholder="Наприклад: Вечір джазу"
+            >
+            <span class="error-message" id="title-error" aria-live="polite"></span>
           </div>
+
           <div class="form-group">
-            <label for="filter-category">Категорія заходу:</label>
-            <select id="filter-category" name="category">
-              <option value="all">Усі категорії</option>
-              <option value="concert">Концерти</option>
+            <label for="event-category">Категорія заходу:</label>
+            <select id="event-category" name="category" required>
+              <option value="" disabled selected>Оберіть категорію</option>
+              <option value="concert">Концерт</option>
               <option value="theatre">Театр</option>
-              <option value="exhibition">Виставки</option>
+              <option value="exhibition">Виставка</option>
             </select>
           </div>
-          <button type="submit" class="btn-submit">Застосувати фільтр</button>
+
+          <div class="form-group">
+            <label for="event-date">Дата проведення:</label>
+            <input type="date" id="event-date" name="date" required>
+          </div>
+
+          <button type="submit" class="btn-submit">Додати в афішу</button>
         </form>
       </section>
 
@@ -48,22 +74,7 @@
         <h2>Найближчі події</h2>
         <p id="events-count" class="events-summary">Кількість подій: 0</p>
         
-        <div id="events-list" class="events-grid">
-          <article class="event-card event-card--concert static-card">
-            <div class="event-card__top">
-              <span class="badge badge--concert">Концерт</span>
-              <div class="event-date">
-                <span class="event-date__day">15</span>
-                <span class="event-date__month">жовт</span>
-              </div>
-            </div>
-            <header class="event-card__header">
-              <h3>Статична заготовка</h3>
-              <p><time datetime="2026-10-15T19:00">19:00</time></p>
-            </header>
-            <p>Цей статичний елемент видаляється програмно через .remove().</p>
-          </article>
-        </div>
+        <div id="events-list" class="events-grid"></div>
       </section>
     </main>
 

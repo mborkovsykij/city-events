@@ -72,17 +72,48 @@ img {
 }
 
 .section-filters,
+.section-add-event,
 .section-events {
   margin-bottom: 28px;
 }
 
 .section-filters h2,
+.section-add-event h2,
 .section-events h2,
 .selected-event h2 {
   margin-top: 0;
   margin-bottom: 14px;
   color: #111111;
   font-size: 22px;
+}
+
+.filter-buttons {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin-bottom: 16px;
+}
+
+.btn-filter {
+  padding: 8px 16px;
+  background-color: #ffffff;
+  color: #1a1e24;
+  border: 2px solid #ced4da;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 15px;
+  font-weight: 600;
+  transition: all 0.2s ease;
+}
+
+.btn-filter:hover {
+  border-color: #ffb703;
+}
+
+.btn-filter.active {
+  background-color: #1a1e24;
+  color: #ffb703;
+  border-color: #1a1e24;
 }
 
 .events-summary {
@@ -117,26 +148,43 @@ img {
 .form-group label {
   font-weight: 600;
   font-size: 14px;
+  white-space: nowrap;
 }
 
 .form-group input,
 .form-group select {
+  height: 42px;
   padding: 8px 12px;
   border: 1px solid #ccc;
   border-radius: 4px;
-  font-size: 16px;
+  font-size: 15px;
   width: 100%;
 }
 
+.error-message {
+  color: #a8201a;
+  font-size: 13px;
+  font-weight: 600;
+  min-height: 18px;
+  margin-top: 2px;
+}
+
+input:invalid:focus {
+  border-color: #a8201a;
+  outline: none;
+}
+
 .btn-submit {
-  padding: 10px 16px;
+  height: 42px;
+  padding: 0 16px;
   background-color: #1a1e24;
   color: #ffb703;
   border: 1px solid #ffb703;
   border-radius: 4px;
   cursor: pointer;
-  font-size: 16px;
+  font-size: 15px;
   font-weight: 600;
+  white-space: nowrap;
   transition: background-color 0.2s ease, color 0.2s ease;
 }
 
@@ -321,18 +369,14 @@ img {
   }
 
   .filter-form {
-    flex-direction: row;
-    align-items: flex-end;
-    flex-wrap: wrap;
-  }
-
-  .form-group {
-    flex: 1 1 200px;
+    display: grid;
+    grid-template-columns: 1.8fr 1.3fr 1.2fr auto;
+    align-items: start;
+    gap: 12px;
   }
 
   .btn-submit {
-    align-self: flex-end;
-    margin-bottom: 2px;
+    margin-top: 27px;
   }
 
   .events-grid {
