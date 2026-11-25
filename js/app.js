@@ -3,12 +3,15 @@ console.log('js/app.js підключено');
 // Ендпоінт публічного API Nager.Date Public Holidays (Варіант 5)
 const API_URL = 'https://date.nager.at/api/v3/PublicHolidays/2026/UA';
 
-// Ключі для localStorage та параметри бази IndexedDB (Варіант 5: сховище savedEvents, keyPath: id)
+// Ключі для localStorage та параметри бази IndexedDB
 const LS_SAVED_KEY = 'savedEvents_v5';
 const LS_MIGRATED_FLAG = 'savedEvents_migrated';
 const DB_NAME = 'EventsPosterDB';
 const DB_VERSION = 1;
 const STORE_NAME = 'savedEvents';
+
+// Горизонт планування (у днях) для розрахунку відсотка заповнення прогрес-індикатора «днів до події»
+const HORIZON_DAYS = 90;
 
 let events = [];
 let savedEventsCache = [];
@@ -20,6 +23,7 @@ const titleInput = document.querySelector('#event-title');
 const titleError = document.querySelector('#title-error');
 const categoryFiltersContainer = document.querySelector('#category-filters');
 const btnReload = document.querySelector('#btn-reload');
+const btnToggleAnim = document.querySelector('#btn-toggle-anim');
 const statusMessage = document.querySelector('#status-message');
 
 const savedEventsList = document.querySelector('#saved-events-list');
@@ -38,15 +42,13 @@ const categoryMeta = {
 };
 
 // =========================================================================
-// БЛОК 1: Робота з localStorage (Кроки 2-4, використовується для міграції)
+// Робота з localStorage та IndexedDB (Практикум 11)
 // =========================================================================
 
-// Синхронне збереження масиву обраних подій у localStorage у форматі JSON
 function saveToLocalStorage(items) {
   localStorage.setItem(LS_SAVED_KEY, JSON.stringify(items));
 }
 
-// Безпечне зчитування та розбір даних із localStorage з перехопленням пошкодженого JSON
 function loadFromLocalStorage() {
   try {
     const raw = localStorage.getItem(LS_SAVED_KEY);
@@ -57,11 +59,6 @@ function loadFromLocalStorage() {
   }
 }
 
-// =========================================================================
-// БЛОК 2: Асинхронна робота з IndexedDB (Кроки 5-12)
-// =========================================================================
-
-// Відкриття або ініціалізація бази даних IndexedDB та створення object store "savedEvents"
 function openDB() {
   return new Promise((resolve, reject) => {
     if (!('indexedDB' in window)) {
@@ -83,7 +80,6 @@ function openDB() {
   });
 }
 
-// Додавання або оновлення обраної події в об'єктному сховищі savedEvents (транзакція readwrite)
 async function saveEventToDB(eventRecord) {
   const db = await openDB();
   return new Promise((resolve, reject) => {
@@ -94,7 +90,6 @@ async function saveEventToDB(eventRecord) {
   });
 }
 
-// Отримання всіх збережених подій зі сховища savedEvents (транзакція readonly)
 async function getAllSavedEvents() {
   const db = await openDB();
   return new Promise((resolve, reject) => {
@@ -105,7 +100,6 @@ async function getAllSavedEvents() {
   });
 }
 
-// Видалення події за ключем id зі сховища savedEvents (транзакція readwrite)
 async function deleteSavedEventFromDB(id) {
   const db = await openDB();
   return new Promise((resolve, reject) => {
@@ -116,7 +110,6 @@ async function deleteSavedEventFromDB(id) {
   });
 }
 
-// Одноразова міграція накопичених записів із localStorage в IndexedDB (Крок 8)
 async function migrateFromLocalStorageIfNeeded() {
   const alreadyMigrated = localStorage.getItem(LS_MIGRATED_FLAG) === 'true';
   if (alreadyMigrated) return;
@@ -128,20 +121,17 @@ async function migrateFromLocalStorageIfNeeded() {
     for (const item of lsItems) {
       await saveEventToDB(item);
     }
-    console.log(`Виконано одноразову міграцію ${lsItems.length} записів із localStorage в IndexedDB.`);
   }
 
   localStorage.setItem(LS_MIGRATED_FLAG, 'true');
 }
 
-// Відображення повідомлення про помилку доступу до IndexedDB (Крок 11)
 function showDBError(text) {
   if (!dbErrorMessage) return;
   dbErrorMessage.textContent = text;
   dbErrorMessage.style.display = 'block';
 }
 
-// Рендеринг бічної панелі обраних подій, завантажених з IndexedDB
 function renderSavedEvents(savedItems) {
   if (!savedEventsList || !savedCountElement) return;
 
@@ -183,7 +173,6 @@ function renderSavedEvents(savedItems) {
   });
 }
 
-// Синхронізація кешу обраних подій з IndexedDB та оновлення інтерфейсу
 async function refreshSavedEventsFromDB() {
   try {
     savedEventsCache = await getAllSavedEvents();
@@ -191,11 +180,10 @@ async function refreshSavedEventsFromDB() {
     renderEvents(getCurrentFilteredEvents());
   } catch (error) {
     console.error('Помилка читання IndexedDB:', error);
-    showDBError('Не вдалося отримати доступ до локальної бази даних IndexedDB (можливо, увімкнено приватний режим).');
+    showDBError('Не вдалося отримати доступ до локальної бази даних IndexedDB.');
   }
 }
 
-// Перемикання стану «в обраному» для події (запис у IndexedDB або видалення)
 async function handleToggleFavorite(eventItem) {
   try {
     const exists = savedEventsCache.some(saved => saved.id === eventItem.id);
@@ -203,7 +191,6 @@ async function handleToggleFavorite(eventItem) {
     if (exists) {
       await deleteSavedEventFromDB(eventItem.id);
     } else {
-      // Модель запису за варіантом 5: { id, date, name, location }
       const recordToSave = {
         id: eventItem.id,
         date: eventItem.rawDate,
@@ -211,7 +198,6 @@ async function handleToggleFavorite(eventItem) {
         location: eventItem.location
       };
       await saveEventToDB(recordToSave);
-      // Дублювання у localStorage для демонстрації роботи обох сховищ
       saveToLocalStorage([...savedEventsCache, recordToSave]);
     }
 
@@ -222,7 +208,6 @@ async function handleToggleFavorite(eventItem) {
   }
 }
 
-// Видалення події зі списку обраних за кнопкою «Видалити»
 async function handleRemoveSaved(id) {
   try {
     await deleteSavedEventFromDB(id);
@@ -236,7 +221,52 @@ async function handleRemoveSaved(id) {
 }
 
 // =========================================================================
-// БЛОК 3: Основна логіка афіші, рендер карток та Fetch API
+// Розрахунок даних для CSS прогрес-індикатора «днів до події» (Практикум 12)
+// =========================================================================
+
+// Обчислення різниці дат та відсотка заповнення смуги наближення події
+function calculateEventCountdown(rawDate) {
+  const today = new Date();
+  today.setHours(0, 0, 0, 0);
+
+  const targetDate = new Date(rawDate);
+  targetDate.setHours(0, 0, 0, 0);
+
+  const diffDays = Math.ceil((targetDate - today) / (1000 * 60 * 60 * 24));
+
+  if (diffDays < 0) {
+    return {
+      label: `Минула (${Math.abs(diffDays)} дн. тому)`,
+      percent: 100,
+      modifier: 'past',
+      isSoon: false
+    };
+  }
+
+  if (diffDays === 0) {
+    return {
+      label: 'Відбувається сьогодні!',
+      percent: 100,
+      modifier: 'today',
+      isSoon: true
+    };
+  }
+
+  // Чим менше днів залишилося в межах горизонту (90 днів), тим вищий відсоток наближення
+  const clampedDays = Math.min(diffDays, HORIZON_DAYS);
+  const progressPercent = Math.max(10, Math.round(((HORIZON_DAYS - clampedDays) / HORIZON_DAYS) * 100));
+  const isSoon = diffDays <= 30;
+
+  return {
+    label: `До події: ${diffDays} дн.`,
+    percent: progressPercent,
+    modifier: isSoon ? 'soon' : 'upcoming',
+    isSoon: isSoon
+  };
+}
+
+// =========================================================================
+// Основна логіка афіші, рендер із CSS-анімацією та Fetch API
 // =========================================================================
 
 function showStatus(text, type = 'loading') {
@@ -264,15 +294,19 @@ function getCurrentFilteredEvents() {
   return events.filter(item => item.category === selectedCategory);
 }
 
+// Рендеринг карток із каскадною CSS-анімацією появи та плавним прогрес-індикатором днів
 function renderEvents(items) {
   eventsListContainer.innerHTML = '';
 
-  items.forEach(item => {
+  items.forEach((item, index) => {
     const isSaved = savedEventsCache.some(saved => saved.id === item.id);
+    const countdown = calculateEventCountdown(item.rawDate);
 
     const card = document.createElement('article');
-    card.classList.add('event-card', `event-card--${item.category}`);
+    card.classList.add('event-card', `event-card--${item.category}`, 'event-card--animated');
     card.dataset.category = item.category;
+    // Каскадна затримка анімації появи кожної наступної картки у стрічці
+    card.style.animationDelay = `${Math.min(index * 60, 480)}ms`;
 
     const topDiv = document.createElement('div');
     topDiv.classList.add('event-card__top');
@@ -324,7 +358,38 @@ function renderEvents(items) {
     const descPara = document.createElement('p');
     descPara.textContent = item.description || 'Загальноміська культурна подія.';
 
-    // Кнопка додавання / видалення події з IndexedDB (Варіант 5)
+    // CSS прогрес-індикатор «днів до події» (ширина плавно анімується через transition)
+    const progressWrap = document.createElement('div');
+    progressWrap.classList.add('days-progress');
+
+    const progressHeader = document.createElement('div');
+    progressHeader.classList.add('days-progress__header');
+
+    const labelSpan = document.createElement('span');
+    labelSpan.textContent = countdown.label;
+    if (countdown.isSoon) {
+      labelSpan.classList.add('days-progress__badge--soon');
+    }
+
+    const percentSpan = document.createElement('span');
+    percentSpan.textContent = `${countdown.percent}%`;
+
+    progressHeader.append(labelSpan, percentSpan);
+
+    const trackDiv = document.createElement('div');
+    trackDiv.classList.add('days-progress__track');
+
+    const fillDiv = document.createElement('div');
+    fillDiv.classList.add('days-progress__fill', `days-progress__fill--${countdown.modifier}`);
+    trackDiv.append(fillDiv);
+
+    progressWrap.append(progressHeader, trackDiv);
+
+    // Запуск плавного CSS-переходу ширини смуги після вставки вузла в DOM
+    requestAnimationFrame(() => {
+      fillDiv.style.width = `${countdown.percent}%`;
+    });
+
     const actionsDiv = document.createElement('div');
     actionsDiv.classList.add('event-card__actions');
 
@@ -341,7 +406,7 @@ function renderEvents(items) {
 
     actionsDiv.append(favBtn);
 
-    card.append(topDiv, header, figure, descPara, actionsDiv);
+    card.append(topDiv, header, figure, descPara, progressWrap, actionsDiv);
     eventsListContainer.append(card);
   });
 }
@@ -473,9 +538,14 @@ categoryFiltersContainer.addEventListener('click', event => {
   updateSummary(filteredEvents);
 });
 
+// Кнопка керування станом CSS-анімації (animation-play-state: paused / running)
+btnToggleAnim.addEventListener('click', () => {
+  const isPaused = eventsListContainer.classList.toggle('animations-paused');
+  btnToggleAnim.textContent = isPaused ? 'Відновити анімацію' : 'Пауза анімації';
+});
+
 btnReload.addEventListener('click', loadEventsFromAPI);
 
-// Послідовна ініціалізація при завантаженні сторінки: міграція -> читання IndexedDB -> завантаження API
 async function initApp() {
   try {
     await migrateFromLocalStorageIfNeeded();

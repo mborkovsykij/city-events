@@ -555,4 +555,114 @@ input:invalid:focus {
   background-color: #a8201a;
   color: #ffffff;
  }
+ events-controls {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.btn-anim-control {
+  padding: 8px 14px;
+  background-color: #ffffff;
+  color: #1a1e24;
+  border: 1px solid #ced4da;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 14px;
+  font-weight: 600;
+  transition: border-color 0.2s ease, background-color 0.2s ease;
+}
+
+.btn-anim-control:hover {
+  border-color: #ffb703;
+  background-color: #fffdf5;
+}
+
+/* =========================================================================
+   CSS-анімації та прогрес-індикатор «днів до події» (Практикум 12, Варіант 5)
+   ========================================================================= */
+
+/* Ключові кадри плавної появи карток подій у стрічці (transform + opacity) */
+@keyframes cardFadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(16px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes urgentPulse {
+  0%, 100% {
+    transform: scale(1);
+  }
+  50% {
+    transform: scale(1.03);
+  }
+}
+
+/* Анімована поява кожної картки у списку */
+.event-card--animated {
+  animation: cardFadeIn 0.45s ease-out both;
+}
+
+.animations-paused .event-card--animated,
+.animations-paused .days-progress__badge--soon {
+  animation-play-state: paused !important;
+}
+
+/* Блок прогрес-індикатора «днів до події» */
+.days-progress {
+  margin-top: 10px;
+  margin-bottom: 6px;
+}
+
+.days-progress__header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-size: 13px;
+  font-weight: 600;
+  color: #1a1e24;
+  margin-bottom: 5px;
+}
+
+.days-progress__badge--soon {
+  display: inline-block;
+  padding: 2px 6px;
+  border-radius: 4px;
+  background-color: #fff3cd;
+  color: #664d03;
+  animation: urgentPulse 1.6s ease-in-out infinite;
+}
+
+.days-progress__track {
+  width: 100%;
+  height: 8px;
+  background-color: #e9ecef;
+  border-radius: 999px;
+  overflow: hidden;
+ }
+
+.days-progress__fill {
+  height: 100%;
+  width: 0%;
+  border-radius: 999px;
+  background-color: #005f73;
+  transition: width 0.65s cubic-bezier(0.22, 1, 0.36, 1), background-color 0.4s ease;
+ }
+
+.days-progress__fill--soon {
+  background-color: #ffb703;
+ }
+
+.days-progress__fill--today {
+  background-color: #2f7d32;
+ }
+
+.days-progress__fill--past {
+  background-color: #adb5bd;
+ }
 }
