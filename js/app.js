@@ -1,5 +1,7 @@
+// Перевірка коректного підключення скрипта до HTML-сторінки
 console.log('js/app.js підключено');
 
+// Вхідний масив об'єктів культурних подій міста (Варіант 5)
 const events = [
   {
     title: 'Симфонічний вечір',
@@ -42,7 +44,7 @@ const events = [
     month: 'жовт',
     time: '19:30',
     location: 'Будинок органної музики',
-    img: 'assets/img/organ.jpg', 
+    img: 'assets/img/organ.jpg',
     description: 'Величне звучання історичного органа з творчістю Й. С. Баха.'
   },
   {
@@ -53,7 +55,7 @@ const events = [
     month: 'жовт',
     time: '12:00',
     location: 'Мистецький арсенал',
-    img: 'assets/img/installation.jpg', 
+    img: 'assets/img/installation.jpg',
     description: 'Інтерактивна експозиція цифрового та медіа-мистецтва.'
   },
   {
@@ -64,28 +66,35 @@ const events = [
     month: 'лист',
     time: '19:00',
     location: 'Театр драми і комедії',
-    img: 'assets/img/comedy.jpg', 
+    img: 'assets/img/comedy.jpg',
     description: 'Легка та дотепна вистава про курйози сучасного міського життя.'
   }
 ];
 
+// Пошук та програмне видалення початкової статичної картки-заглушки з DOM
 const staticCard = document.querySelector('.static-card');
 if (staticCard) {
   staticCard.remove();
 }
 
+// Вибірка контейнера сітки подій та елемента підсумкового лічильника
 const eventsListContainer = document.querySelector('#events-list');
 const eventsCountElement = document.querySelector('#events-count');
 
+// Функція динамічного рендерингу масиву подій у DOM-дерево
 function renderEvents(items) {
+  // Очищення контейнера перед генерацією актуального списку карток
   eventsListContainer.innerHTML = '';
 
+  // Перебір кожного об'єкта події та створення відповідної структури картки
   items.forEach(item => {
+    // Створення головного тегу article та налаштування класів-модифікаторів і data-атрибута
     const card = document.createElement('article');
     card.classList.add('event-card');
     card.classList.add(`event-card--${item.category}`);
     card.dataset.category = item.category;
 
+    // Формування верхньої панелі картки (бейдж категорії та блок дати)
     const topDiv = document.createElement('div');
     topDiv.classList.add('event-card__top');
 
@@ -107,6 +116,7 @@ function renderEvents(items) {
     dateBox.append(daySpan, monthSpan);
     topDiv.append(badge, dateBox);
 
+    // Створення заголовка картки з назвою події та часом проведення
     const header = document.createElement('header');
     header.classList.add('event-card__header');
 
@@ -120,6 +130,7 @@ function renderEvents(items) {
 
     header.append(title, timePara);
 
+    // Додавання ілюстрації заходу та підпису місця проведення
     const figure = document.createElement('figure');
     figure.classList.add('event-card__figure');
 
@@ -133,6 +144,7 @@ function renderEvents(items) {
 
     figure.append(img, figcaption);
 
+    // Створення абзацу з описом події та навігаційного посилання
     const descPara = document.createElement('p');
     descPara.textContent = item.description;
 
@@ -141,16 +153,19 @@ function renderEvents(items) {
     link.classList.add('event-card__link');
     link.textContent = 'Детальніше';
 
+    // Збірка всіх створених дочірніх вузлів у картку та вставка її у сітку на сторінці
     card.append(topDiv, header, figure, descPara, link);
     eventsListContainer.append(card);
   });
 }
 
+// Функція оновлення текстового вмісту підсумкового лічильника кількості подій
 function updateSummary(items) {
   if (eventsCountElement) {
     eventsCountElement.textContent = `Кількість подій: ${items.length}`;
   }
 }
 
+// Початковий виклик функцій для рендерингу карток та оновлення лічильника при завантаженні
 renderEvents(events);
 updateSummary(events);
