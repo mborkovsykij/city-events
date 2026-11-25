@@ -31,7 +31,7 @@
           <button type="button" class="btn-filter active" data-filter="all">Усі події</button>
           <button type="button" class="btn-filter" data-filter="concert">Концерти</button>
           <button type="button" class="btn-filter" data-filter="theatre">Театр</button>
-          <button type="button" class="btn-filter" data-filter="exhibition">Виставки</button>
+          <button type="button" class="btn-filter" data-filter="exhibition">Виставки / Свята</button>
         </div>
       </section>
 
@@ -57,7 +57,7 @@
               <option value="" disabled selected>Оберіть категорію</option>
               <option value="concert">Концерт</option>
               <option value="theatre">Театр</option>
-              <option value="exhibition">Виставка</option>
+              <option value="exhibition">Виставка / Свято</option>
             </select>
           </div>
 
@@ -71,8 +71,13 @@
       </section>
 
       <section id="events" class="section-events">
-        <h2>Найближчі події</h2>
+        <div class="events-header-bar">
+          <h2>Найближчі події</h2>
+          <button type="button" id="btn-reload" class="btn-reload">Оновити афішу з сервера</button>
+        </div>
+
         <p id="events-count" class="events-summary">Кількість подій: 0</p>
+        <div id="status-message" class="status-message" role="status" aria-live="polite"></div>
         
         <div id="events-list" class="events-grid"></div>
       </section>

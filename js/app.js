@@ -1,98 +1,57 @@
+// Перевірка підключення скрипта
 console.log('js/app.js підключено');
 
-const events = [
-  {
-    title: 'Симфонічний вечір',
-    category: 'concert',
-    categoryLabel: 'Концерт',
-    day: '15',
-    month: 'жовт',
-    time: '19:00',
-    location: 'Головна концертна зала',
-    img: 'assets/img/concert.jpg',
-    description: 'Шедеври класичної музики у виконанні камерного оркестру при атмосферному освітленні.'
-  },
-  {
-    title: 'Виставка мистецтва',
-    category: 'exhibition',
-    categoryLabel: 'Виставка',
-    day: '18',
-    month: 'жовт',
-    time: '11:00',
-    location: 'Виставковий центр',
-    img: 'assets/img/art.jpg',
-    description: 'Експозиція візуального мистецтва та просторових інсталяцій від сучасних авторів.'
-  },
-  {
-    title: 'Драматична вистава',
-    category: 'theatre',
-    categoryLabel: 'Театр',
-    day: '22',
-    month: 'жовт',
-    time: '18:30',
-    location: 'Національний драматичний театр',
-    img: 'assets/img/theatre.jpg',
-    description: 'Класична п\'єса в сучасній режисерській інтерпретації провідної трупи міста.'
-  },
-  {
-    title: 'Органний концерт',
-    category: 'concert',
-    categoryLabel: 'Концерт',
-    day: '25',
-    month: 'жовт',
-    time: '19:30',
-    location: 'Будинок органної музики',
-    img: 'assets/img/organ.jpg',
-    description: 'Величне звучання історичного органа з творчістю Й. С. Баха.'
-  },
-  {
-    title: 'Сучасні інсталяції',
-    category: 'exhibition',
-    categoryLabel: 'Виставка',
-    day: '29',
-    month: 'жовт',
-    time: '12:00',
-    location: 'Мистецький арсенал',
-    img: 'assets/img/installation.jpg',
-    description: 'Інтерактивна експозиція цифрового та медіа-мистецтва.'
-  },
-  {
-    title: 'Комедійна постановка',
-    category: 'theatre',
-    categoryLabel: 'Театр',
-    day: '02',
-    month: 'лист',
-    time: '19:00',
-    location: 'Театр драми і комедії',
-    img: 'assets/img/comedy.jpg',
-    description: 'Легка та дотепна вистава про курйози сучасного міського життя.'
-  }
-];
+// Ендпоінт публічного API Nager.Date Public Holidays для України на 2026 рік (Варіант 5)
+const API_URL = 'https://date.nager.at/api/v3/PublicHolidays/2026/UA';
 
+// Поточний масив подій афіші
+let events = [];
+
+// Вибірка основних DOM-елементів інтерфейсу
 const eventsListContainer = document.querySelector('#events-list');
 const eventsCountElement = document.querySelector('#events-count');
 const addEventForm = document.querySelector('#add-event-form');
 const titleInput = document.querySelector('#event-title');
 const titleError = document.querySelector('#title-error');
 const categoryFiltersContainer = document.querySelector('#category-filters');
+const btnReload = document.querySelector('#btn-reload');
+const statusMessage = document.querySelector('#status-message');
 
+// Словник скорочених назв місяців українською мовою
 const ukrainianMonths = [
   'січ', 'лют', 'бер', 'квіт', 'трав', 'черв',
   'лип', 'серп', 'вер', 'жовт', 'лист', 'груд'
 ];
 
+// Довідник міток категорій та ілюстрацій за замовчуванням
 const categoryMeta = {
   concert: { label: 'Концерт', img: 'assets/img/concert.jpg' },
   theatre: { label: 'Театр', img: 'assets/img/theatre.jpg' },
-  exhibition: { label: 'Виставка', img: 'assets/img/art.jpg' }
+  exhibition: { label: 'Виставка / Свято', img: 'assets/img/art.jpg' }
 };
 
+// Відображення стану завантаження або помилки у спеціальному блоці інтерфейсу
+function showStatus(text, type = 'loading') {
+  if (!statusMessage) return;
+  statusMessage.textContent = text;
+  statusMessage.className = `status-message ${type}`;
+}
+
+// Приховування повідомлення про статус
+function clearStatus() {
+  if (!statusMessage) return;
+  statusMessage.textContent = '';
+  statusMessage.className = 'status-message';
+}
+
+// Оновлення підсумкового лічильника кількості подій
 function updateSummary(items) {
   if (eventsCountElement) {
     eventsCountElement.textContent = `Кількість подій: ${items.length}`;
   }
 }
 
+// Динамічний рендеринг карток подій у DOM-дерево (Практикум 7)
 function renderEvents(items) {
   eventsListContainer.innerHTML = '';
 
@@ -130,7 +89,7 @@ function renderEvents(items) {
 
     const timePara = document.createElement('p');
     const timeElem = document.createElement('time');
-    timeElem.textContent = item.time || '18:00';
+    timeElem.textContent = item.time || '10:00';
     timePara.append(timeElem);
 
     header.append(title, timePara);
@@ -144,12 +103,12 @@ function renderEvents(items) {
     img.classList.add('event-card__img');
 
     const figcaption = document.createElement('figcaption');
-    figcaption.textContent = item.location || 'Центральний майданчик';
+    figcaption.textContent = item.location || 'Міські локації';
 
     figure.append(img, figcaption);
 
     const descPara = document.createElement('p');
-    descPara.textContent = item.description || 'Культурна подія міста.';
+    descPara.textContent = item.description || 'Загальноміська культурна подія.';
 
     const link = document.createElement('a');
     link.href = '#selected-event';
@@ -161,6 +120,61 @@ function renderEvents(items) {
   });
 }
 
+// Асинхронне завантаження подій із зовнішнього публічного API Nager.Date (https://date.nager.at/api/v3/PublicHolidays/2026/UA)
+async function loadEventsFromAPI() {
+  showStatus('Завантаження подій із сервера...', 'loading');
+  if (btnReload) btnReload.disabled = true;
+
+  try {
+    const response = await fetch(API_URL);
+
+    // Перевірка HTTP-статусу відповіді (зокрема обробка 404 за умовою варіанта)
+    if (!response.ok) {
+      if (response.status === 404) {
+        throw new Error('Дані про події не знайдено');
+      }
+      throw new Error(`Сервер відповів зі статусом ${response.status}`);
+    }
+
+    const data = await response.json();
+    console.log('Отримані дані з API:', data);
+
+    // Перетворення об'єктів відповіді API (date, localName, name) у формат карток застосунку
+    const apiEvents = data.map(item => {
+      const parsedDate = new Date(item.date);
+      const day = String(parsedDate.getDate()).padStart(2, '0');
+      const month = ukrainianMonths[parsedDate.getMonth()];
+
+      return {
+        title: item.localName,
+        category: 'exhibition',
+        categoryLabel: 'Міське свято',
+        day: day,
+        month: month,
+        time: '10:00',
+        location: 'Центральні міські локації',
+        img: 'assets/img/art.jpg',
+        description: `Загальноміська подія: ${item.name} (${item.localName}). Святкові заходи та культурна програма.`
+      };
+    });
+
+    events = apiEvents;
+    renderEvents(events);
+    updateSummary(events);
+    clearStatus();
+  } catch (error) {
+    console.error('Помилка завантаження API:', error);
+    if (!navigator.onLine) {
+      showStatus('Не вдалося отримати дані. Перевірте з’єднання з інтернетом (Offline).', 'error');
+    } else {
+      showStatus(error.message || 'Дані про події не знайдено', 'error');
+    }
+  } finally {
+    if (btnReload) btnReload.disabled = false;
+  }
+}
+
+// Валідація поля назви події під час введення символів (Практикум 8)
 titleInput.addEventListener('input', () => {
   const value = titleInput.value.trim();
   
@@ -174,6 +188,7 @@ titleInput.addEventListener('input', () => {
   }
 });
 
+// Обробка надсилання форми додавання нової події без перезавантаження сторінки
 addEventForm.addEventListener('submit', event => {
   event.preventDefault();
 
@@ -220,6 +235,7 @@ addEventForm.addEventListener('submit', event => {
   console.log(`Подію "${title}" успішно додано до афіші.`);
 });
 
+// Делегування події кліку для фільтрації подій за категоріями
 categoryFiltersContainer.addEventListener('click', event => {
   const button = event.target.closest('.btn-filter');
   if (!button) return;
@@ -239,5 +255,8 @@ categoryFiltersContainer.addEventListener('click', event => {
   }
 });
 
-renderEvents(events);
-updateSummary(events);
+// Прив'язка повторного запиту до кнопки «Оновити афішу з сервера»
+btnReload.addEventListener('click', loadEventsFromAPI);
+
+// Первинне завантаження подій при відкритті сторінки
+loadEventsFromAPI();

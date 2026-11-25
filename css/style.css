@@ -79,12 +79,70 @@ img {
 
 .section-filters h2,
 .section-add-event h2,
-.section-events h2,
 .selected-event h2 {
   margin-top: 0;
   margin-bottom: 14px;
   color: #111111;
   font-size: 22px;
+}
+
+.events-header-bar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 12px;
+  margin-bottom: 12px;
+}
+
+.events-header-bar h2 {
+  margin: 0;
+  color: #111111;
+  font-size: 22px;
+}
+
+.btn-reload {
+  padding: 8px 16px;
+  background-color: #005f73;
+  color: #ffffff;
+  border: 1px solid #005f73;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 14px;
+  font-weight: 600;
+  transition: background-color 0.2s ease;
+}
+
+.btn-reload:hover:not(:disabled) {
+  background-color: #0a9396;
+}
+
+.btn-reload:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+.status-message {
+  margin-bottom: 16px;
+  padding: 10px 14px;
+  border-radius: 4px;
+  font-size: 15px;
+  display: none;
+}
+
+.status-message.loading {
+  display: block;
+  background-color: #e9ecef;
+  color: #495057;
+  border-left: 4px solid #005f73;
+}
+
+.status-message.error {
+  display: block;
+  background-color: #ffe3e0;
+  color: #a8201a;
+  border-left: 4px solid #a8201a;
+  font-weight: 600;
 }
 
 .filter-buttons {
