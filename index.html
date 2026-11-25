@@ -17,7 +17,7 @@
           <li><a href="#filters">Фільтри</a></li>
           <li><a href="#add-event-section">Додати подію</a></li>
           <li><a href="#events">Події</a></li>
-          <li><a href="#selected-event">Обрана подія</a></li>
+          <li><a href="#saved-events-section">Обрані (IndexedDB)</a></li>
         </ul>
       </nav>
     </div>
@@ -83,12 +83,11 @@
       </section>
     </main>
 
-    <aside id="selected-event" class="selected-event">
-      <h2>Деталі обраної події</h2>
-      <p><strong>Подія:</strong> Симфонічний вечір</p>
-      <p><strong>Місце проведення:</strong> Головний сценічний комплекс</p>
-      <p><strong>Вартість квитка:</strong> від 450 грн</p>
-      <p><strong>Організатор:</strong> Культурна ініціатива</p>
+    <aside id="saved-events-section" class="selected-event">
+      <h2>Обрані події (IndexedDB)</h2>
+      <p id="saved-count" class="saved-summary">Збережено подій: 0</p>
+      <div id="db-error-message" class="status-message error" role="alert"></div>
+      <ul id="saved-events-list" class="saved-list"></ul>
     </aside>
   </div>
 
