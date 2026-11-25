@@ -1,5 +1,7 @@
+// Перевірка коректного підключення зовнішнього скрипта з атрибутом defer
 console.log('js/app.js підключено');
 
+// Вхідний масив об'єктів культурних подій міста (Варіант 5)
 const events = [
   { title: 'Симфонічний вечір', category: 'concert' },
   { title: 'Виставка мистецтва', category: 'exhibition' },
@@ -9,8 +11,10 @@ const events = [
   { title: 'Комедійна театральна постановка', category: 'theatre' }
 ];
 
+// Стрілкова функція для обрізання тексту до заданої довжини n з додаванням трикрапки
 const shorten = (text, n) => (text.length > n ? text.slice(0, n) + '...' : text);
 
+// Функція класифікації категорії події за допомогою умовного оператора if / else if / else
 function getCategoryDescription(category) {
   if (category === 'concert') {
     return 'Концертний захід';
@@ -23,6 +27,7 @@ function getCategoryDescription(category) {
   }
 }
 
+// Функція фільтрації та виведення подій обраної категорії в консоль за допомогою циклу for...of
 function printEventsByCategory(eventsList, targetCategory) {
   console.log(`\n--- Події у категорії: ${targetCategory} ---`);
   let count = 0;
@@ -43,6 +48,7 @@ function printEventsByCategory(eventsList, targetCategory) {
   }
 }
 
+// Виведення загального списку подій у консоль
 console.log('\n--- Загальний список подій ---');
 for (const event of events) {
   const shortTitle = shorten(event.title, 16);
@@ -50,10 +56,12 @@ for (const event of events) {
   console.log(`Подія: ${shortTitle} | Категорія: ${event.category} (${desc})`);
 }
 
+// Виклик функції фільтрації для кожної з доступних категорій
 printEventsByCategory(events, 'concert');
 printEventsByCategory(events, 'theatre');
 printEventsByCategory(events, 'exhibition');
 
+// Тестування роботи стрілкової функції shorten() на короткому та довгому рядках
 console.log('\n--- Тестування стрілкової функції shorten() ---');
 console.log(shorten('Симфонія', 10));
 console.log(shorten('Шедеври класичної музики камерного оркестру', 15));
