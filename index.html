@@ -5,105 +5,150 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Афіша культурних подій міста</title>
   <link rel="stylesheet" href="css/style.css">
+  <!-- Підключення Vue 3 через CDN без збірки -->
+  <script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
   <script src="js/app.js" defer></script>
 </head>
 <body>
 
-  <header class="site-header">
-    <div class="container header-container">
-      <h1 class="site-logo">Афіша культурних подій</h1>
-      <nav aria-label="Головна навігація" class="main-nav">
-        <ul class="nav-list">
-          <li><a href="#filters">Фільтри</a></li>
-          <li><a href="#add-event-section">Додати подію</a></li>
-          <li><a href="#events">Події</a></li>
-          <li><a href="#selected-event">Обрана подія</a></li>
-        </ul>
-      </nav>
+  <div id="app">
+    <header class="site-header">
+      <div class="container header-container">
+        <h1 class="site-logo">Афіша культурних подій</h1>
+        <nav aria-label="Головна навігація" class="main-nav">
+          <ul class="nav-list">
+            <li><a href="#filters">Фільтри</a></li>
+            <li><a href="#add-event-section">Додати подію</a></li>
+            <li><a href="#events">Події</a></li>
+            <li><a href="#selected-event">Обрана подія</a></li>
+          </ul>
+        </nav>
+      </div>
+    </header>
+
+    <div class="container page-layout">
+      <main class="main-content">
+        <section id="filters" class="section-filters">
+          <h2>Фільтр подій за категорією</h2>
+          <div id="category-filters" class="filter-buttons">
+            <button 
+              type="button" 
+              class="btn-filter" 
+              :class="{ active: selectedCategory === 'all' }"
+              @click="selectedCategory = 'all'"
+            >Усі події</button>
+            <button 
+              type="button" 
+              class="btn-filter" 
+              :class="{ active: selectedCategory === 'concert' }"
+              @click="selectedCategory = 'concert'"
+            >Концерти</button>
+            <button 
+              type="button" 
+              class="btn-filter" 
+              :class="{ active: selectedCategory === 'theatre' }"
+              @click="selectedCategory = 'theatre'"
+            >Театр</button>
+            <button 
+              type="button" 
+              class="btn-filter" 
+              :class="{ active: selectedCategory === 'exhibition' }"
+              @click="selectedCategory = 'exhibition'"
+            >Виставки / Свята</button>
+          </div>
+        </section>
+
+        <section id="add-event-section" class="section-add-event">
+          <h2>Додати нову подію в афішу</h2>
+          <form id="add-event-form" class="filter-form" @submit.prevent="addEvent" novalidate>
+            <div class="form-group">
+              <label for="event-title">Назва заходу (мін. 3 символи):</label>
+              <input 
+                type="text" 
+                id="event-title" 
+                v-model.trim="newTitle"
+                required 
+                placeholder="Наприклад: Вечір джазу"
+              >
+              <span class="error-message" aria-live="polite">{{ titleError }}</span>
+            </div>
+
+            <div class="form-group">
+              <label for="event-category">Категорія заходу:</label>
+              <select id="event-category" v-model="newCategory" required>
+                <option value="" disabled>Оберіть категорію</option>
+                <option value="concert">Концерт</option>
+                <option value="theatre">Театр</option>
+                <option value="exhibition">Виставка / Свято</option>
+              </select>
+            </div>
+
+            <div class="form-group">
+              <label for="event-date">Дата проведення:</label>
+              <input type="date" id="event-date" v-model="newDate" required>
+            </div>
+
+            <button type="submit" class="btn-submit">Додати в афішу</button>
+          </form>
+        </section>
+
+        <section id="events" class="section-events">
+          <div class="events-header-bar">
+            <h2>Найближчі події</h2>
+            <button 
+              type="button" 
+              class="btn-reload" 
+              :disabled="isLoading"
+              @click="loadEventsFromAPI"
+            >Оновити афішу з сервера</button>
+          </div>
+
+          <p class="events-summary">Кількість подій: {{ filteredEvents.length }}</p>
+          
+          <div v-if="statusText" class="status-message" :class="statusType" role="status" aria-live="polite">
+            {{ statusText }}
+          </div>
+          
+          <!-- Декларативний рендеринг компонента EventCard циклом v-for -->
+          <div id="events-list" class="events-grid">
+            <event-card
+              v-for="item in filteredEvents"
+              :key="item.id"
+              :title="item.title"
+              :category="item.category"
+              :date="item.date"
+              :time="item.time"
+              :location="item.location"
+              :img="item.img"
+              :description="item.description"
+              @select="selectedEvent = item"
+            ></event-card>
+          </div>
+        </section>
+      </main>
+
+      <aside id="selected-event" class="selected-event">
+        <h2>Деталі обраної події</h2>
+        <p><strong>Подія:</strong> {{ selectedEvent.title }}</p>
+        <p><strong>Місце проведення:</strong> {{ selectedEvent.location }}</p>
+        <p><strong>Дата та час:</strong> {{ selectedEvent.date }} о {{ selectedEvent.time }}</p>
+        <p><strong>Опис:</strong> {{ selectedEvent.description }}</p>
+      </aside>
     </div>
-  </header>
 
-  <div class="container page-layout">
-    <main class="main-content">
-      <section id="filters" class="section-filters">
-        <h2>Фільтр подій за категорією</h2>
-        <div id="category-filters" class="filter-buttons">
-          <button type="button" class="btn-filter active" data-filter="all">Усі події</button>
-          <button type="button" class="btn-filter" data-filter="concert">Концерти</button>
-          <button type="button" class="btn-filter" data-filter="theatre">Театр</button>
-          <button type="button" class="btn-filter" data-filter="exhibition">Виставки / Свята</button>
-        </div>
-      </section>
-
-      <section id="add-event-section" class="section-add-event">
-        <h2>Додати нову подію в афішу</h2>
-        <form id="add-event-form" class="filter-form" novalidate>
-          <div class="form-group">
-            <label for="event-title">Назва заходу (мін. 3 символи):</label>
-            <input 
-              type="text" 
-              id="event-title" 
-              name="title" 
-              required 
-              pattern=".{3,}" 
-              placeholder="Наприклад: Вечір джазу"
-            >
-            <span class="error-message" id="title-error" aria-live="polite"></span>
-          </div>
-
-          <div class="form-group">
-            <label for="event-category">Категорія заходу:</label>
-            <select id="event-category" name="category" required>
-              <option value="" disabled selected>Оберіть категорію</option>
-              <option value="concert">Концерт</option>
-              <option value="theatre">Театр</option>
-              <option value="exhibition">Виставка / Свято</option>
-            </select>
-          </div>
-
-          <div class="form-group">
-            <label for="event-date">Дата проведення:</label>
-            <input type="date" id="event-date" name="date" required>
-          </div>
-
-          <button type="submit" class="btn-submit">Додати в афішу</button>
-        </form>
-      </section>
-
-      <section id="events" class="section-events">
-        <div class="events-header-bar">
-          <h2>Найближчі події</h2>
-          <button type="button" id="btn-reload" class="btn-reload">Оновити афішу з сервера</button>
-        </div>
-
-        <p id="events-count" class="events-summary">Кількість подій: 0</p>
-        <div id="status-message" class="status-message" role="status" aria-live="polite"></div>
-        
-        <div id="events-list" class="events-grid"></div>
-      </section>
-    </main>
-
-    <aside id="selected-event" class="selected-event">
-      <h2>Деталі обраної події</h2>
-      <p><strong>Подія:</strong> Симфонічний вечір</p>
-      <p><strong>Місце проведення:</strong> Головний сценічний комплекс</p>
-      <p><strong>Вартість квитка:</strong> від 450 грн</p>
-      <p><strong>Організатор:</strong> Культурна ініціатива</p>
-    </aside>
+    <footer class="site-footer">
+      <div class="container">
+        <section class="footer-contacts">
+          <h2>Контакти організаторів</h2>
+          <address>
+            <p>Електронна пошта: <a href="mailto:info@cultural-events.ua">info@cultural-events.ua</a></p>
+            <p>Інформаційна лінія: <a href="tel:0800000000">0 (800) 00-00-00</a></p>
+          </address>
+        </section>
+        <p class="copyright">&copy; 2026 Афіша культурних подій міста. Навчальний проєкт ФІОТ КПІ.</p>
+      </div>
+    </footer>
   </div>
-
-  <footer class="site-footer">
-    <div class="container">
-      <section class="footer-contacts">
-        <h2>Контакти організаторів</h2>
-        <address>
-          <p>Електронна пошта: <a href="mailto:info@cultural-events.ua">info@cultural-events.ua</a></p>
-          <p>Інформаційна лінія: <a href="tel:0800000000">0 (800) 00-00-00</a></p>
-        </address>
-      </section>
-      <p class="copyright">&copy; 2026 Афіша культурних подій міста. Навчальний проєкт ФІОТ КПІ.</p>
-    </div>
-  </footer>
 
 </body>
 </html>
